@@ -7,5 +7,10 @@ jobs:
       - checkout
       - setup_docker_engine
       - run:
+          name: Build Binary
+          command:
+            - docker build -t demo-builder -f Dockerfile.build .
+            - docker run --rm demo-builder > demo
+      - run:
           name: Build Image
           command: docker build -t demo .
