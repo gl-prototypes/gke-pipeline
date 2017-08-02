@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    steps:
+      - checkout
+      - setup_docker_engine
+      - run:
+          name: Build Image
+          command: docker build -t demo .
