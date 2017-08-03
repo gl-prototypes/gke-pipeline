@@ -20,7 +20,10 @@ jobs:
             docker run --rm demo-builder > demo
       - run:
           name: Build Image
-          command: docker build -t demo .
+          command: docker build -t us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM .
       - run:
-          name: Install kubectl
-          command: gcloud components install kubectl
+          name: Authenticate gcloud
+          command: |
+            openssl enc -aes-256-cbc -d -in .circleci/gliderlabs.json.enc -out .circleci/gliderlabs.json -k $GCLOUD_KEY
+            gcloud auth activate-service-account --key-file .circleci/gliderlabs.json
+            gcloud docker -- push us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM
