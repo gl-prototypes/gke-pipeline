@@ -7,6 +7,9 @@ jobs:
       - checkout
       - setup_docker_engine
       - run:
+          name: Install Docker
+          command: apk add -U docker
+      - run:
           name: Build Binary
           command: |
             docker build -t demo-builder -f Dockerfile.build .
