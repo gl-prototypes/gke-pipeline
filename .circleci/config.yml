@@ -20,7 +20,9 @@ jobs:
             docker run --rm demo-builder > demo
       - run:
           name: Build Image
-          command: docker build -t us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM .
+          command: |
+            docker build -t us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM .
+            docker tag us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM us.gcr.io/gliderlabs/gke-pipeline:latest
       - run:
           name: Push Image
           command: |
@@ -31,5 +33,7 @@ jobs:
       - run:
           name: Deploy
           command: |
+            gcloud config set project gliderlabs
+            gcloud container clusters get-credentials gl-demo --zone us-central1-a
             kubectl apply -f run/manifest.yaml
             kubectl rollout status deployment/gke-pipeline --watch
