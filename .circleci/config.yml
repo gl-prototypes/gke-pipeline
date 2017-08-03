@@ -2,17 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: google/cloud-sdk:alpine
+      - image: google/cloud-sdk
     steps:
       - checkout
       - setup_docker_engine
       - run:
           name: Install tools
           command: |
-            cd /bin
-            wget -qO- https://download.docker.com/linux/static/stable/x86_64/docker-17.03.2-ce.tgz | tar -zxf-
-            wget -qO- https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl
-            chmod +x kubectl
+            wget -qO- https://download.docker.com/linux/static/stable/x86_64/docker-17.03.2-ce.tgz | tar -zxf- -C /bin
       - run:
           name: Build Binary
           command: |
