@@ -22,8 +22,14 @@ jobs:
           name: Build Image
           command: docker build -t us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM .
       - run:
-          name: Authenticate gcloud
+          name: Push Image
           command: |
             openssl enc -aes-256-cbc -d -in .circleci/gliderlabs.json.enc -out .circleci/gliderlabs.json -k $GCLOUD_KEY
             gcloud auth activate-service-account --key-file .circleci/gliderlabs.json
             gcloud docker -- push us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM
+            gcloud docker -- push us.gcr.io/gliderlabs/gke-pipeline:latest
+      - run:
+          name: Deploy
+          command: |
+            kubectl apply -f run/manifest.yaml
+            kubectl rollout status deployment/gke-pipeline --watch
