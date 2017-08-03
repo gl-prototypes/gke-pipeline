@@ -11,7 +11,7 @@ jobs:
           command: |
             apk add -U openssl docker
             cd /bin
-            wget -qO- https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl
+            wget -qO- https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl > kubectl
             chmod +x kubectl
       - run:
           name: Build Binary
