@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: docker:dind
+      - image: google/cloud-sdk:alpine
     steps:
       - checkout
       - setup_docker_engine
@@ -14,3 +14,6 @@ jobs:
       - run:
           name: Build Image
           command: docker build -t demo .
+      - run:
+          name: Install kubectl
+          command: gcloud components install kubectl
