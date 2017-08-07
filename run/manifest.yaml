@@ -28,7 +28,7 @@ spec:
     app: gke-pipeline
   ports:
     - name: ssh
-      targetPort: ssh
+      targetPort: 22
       port: 22
 ---
 apiVersion: extensions/v1beta1
