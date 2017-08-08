@@ -23,17 +23,18 @@ jobs:
           command: |
             docker build -t us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM .
             docker tag us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM us.gcr.io/gliderlabs/gke-pipeline:latest
-      - run:
-          name: Push Image
-          command: |
-            openssl enc -aes-256-cbc -d -in .circleci/gliderlabs.json.enc -out .circleci/gliderlabs.json -k $GCLOUD_KEY
-            gcloud auth activate-service-account --key-file .circleci/gliderlabs.json
-            gcloud docker -- push us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM
-            gcloud docker -- push us.gcr.io/gliderlabs/gke-pipeline:latest
-      - run:
-          name: Deploy
-          command: |
-            gcloud config set project gliderlabs
-            gcloud container clusters get-credentials gl-demo --zone us-central1-a
-            kubectl apply -f run/manifest.yaml
-            kubectl rollout status deployment/gke-pipeline --watch
+      # the following is commented out since this cluster and credentials no longer exists
+      # - run:
+      #     name: Push Image
+      #     command: |
+      #       openssl enc -aes-256-cbc -d -in .circleci/gliderlabs.json.enc -out .circleci/gliderlabs.json -k $GCLOUD_KEY
+      #       gcloud auth activate-service-account --key-file .circleci/gliderlabs.json
+      #       gcloud docker -- push us.gcr.io/gliderlabs/gke-pipeline:build-$CIRCLE_BUILD_NUM
+      #       gcloud docker -- push us.gcr.io/gliderlabs/gke-pipeline:latest
+      # - run:
+      #     name: Deploy
+      #     command: |
+      #       gcloud config set project gliderlabs
+      #       gcloud container clusters get-credentials gl-demo --zone us-central1-a
+      #       kubectl apply -f run/manifest.yaml
+      #       kubectl rollout status deployment/gke-pipeline --watch
