@@ -16,7 +16,7 @@ spec:
           image: us.gcr.io/gliderlabs/gke-pipeline:latest
           ports:
             - name: ssh
-              containerPort: 22
+              containerPort: 2222
 ---
 kind: Service
 apiVersion: v1
@@ -28,14 +28,5 @@ spec:
     app: gke-pipeline
   ports:
     - name: ssh
-      targetPort: 22
       port: 22
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: basic-ingress
-spec:
-  backend:
-    serviceName: gke-pipeline
-    servicePort: 22
+      targetPort: 2222
